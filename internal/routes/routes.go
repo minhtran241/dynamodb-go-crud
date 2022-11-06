@@ -40,7 +40,6 @@ func (r *Router) setConfigsRouters() {
 
 func (r *Router) RouterHealth(repository adapter.Interface) {
 	handler := HealthHandler.NewHandler(repository)
-
 	r.router.Route("/health", func(route chi.Router) {
 		route.Post("/", handler.Post)
 		route.Get("/", handler.Get)

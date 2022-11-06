@@ -20,7 +20,7 @@ type Interface interface {
 	Delete(condition map[string]interface{}, tableName string) (response *dynamodb.DeleteItemOutput, err error)
 }
 
-func NewAdapter(con *dynamodb.DynamoDB) *Database {
+func NewAdapter(con *dynamodb.DynamoDB) Interface {
 	return &Database{
 		connection: con,
 		logMode:    false,
