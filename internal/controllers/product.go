@@ -1,6 +1,9 @@
 package product
 
 import (
+	"time"
+
+	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 	"github.com/google/uuid"
 
 	"github.com/minhtran241/dynamodb-go-crud/internal/entities/product"
@@ -31,21 +34,56 @@ func (c *Controller) ListOne(id uuid.UUID) (entity product.Product, err error) {
 	if err != nil {
 		return entity, err
 	}
-	return product.ParseDynamoAttributeToStruct(response.Item), nil
+	return product.ParseDynamoAttributeToStruct(response.Item)
 }
 
 func (c *Controller) ListAll() (entities []product.Product, err error) {
-
+	entities = []product.Product{}
+	var entity product.Product
+	filter := expression.Name("name").NotEqual(expression.Value(""))
+	condition, err := expression.NewBuilder().WithFilter(filter).Build()
+	if err != nil {
+		return entities, err
+	}
+	response, err := c.repository.FindAll(condition, entity.TableName())
+	if err != nil {
+		return entities, err
+	}
+	if response != nil {
+		for _, value := range response.Items {
+			entity, err := product.ParseDynamoAttributeToStruct(value)
+			if err != nil {
+				return entities, err
+			}
+			entities = append(entities, entity)
+		}
+	}
+	return entities, nil
 }
 
 func (c *Controller) Create(entity *product.Product) (uuid.UUID, error) {
-
+	entity.CreatedAt = time.Now()
+	c.repository.CreateOrUpdate(entity.GetMap(), entity.TableName())
+	return entity.ID, nil
 }
 
 func (c *Controller) Update(id uuid.UUID, entity *product.Product) error {
-
+	found, err := c.ListOne(id)
+	if err != nil {
+		return err
+	}
+	found.ID = id
+	found.Name = entity.Name
+	found.UpdatedAt = time.Now()
+	_, err = c.repository.CreateOrUpdate(found.GetMap(), found.TableName())
+	return err
 }
 
 func (c *Controller) Remove(id uuid.UUID) error {
-
+	entity, err := c.ListOne(id)
+	if err != nil {
+		return err
+	}
+	_, err = c.repository.Delete(entity.GetFilterId(), entity.TableName())
+	return err
 }

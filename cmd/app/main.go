@@ -12,6 +12,7 @@ import (
 	"github.com/minhtran241/dynamodb-go-crud/internal/repository/instance"
 	"github.com/minhtran241/dynamodb-go-crud/internal/routes"
 	"github.com/minhtran241/dynamodb-go-crud/internal/rules"
+	RulesProduct "github.com/minhtran241/dynamodb-go-crud/internal/rules/product"
 	"github.com/minhtran241/dynamodb-go-crud/utils/logger"
 )
 

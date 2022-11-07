@@ -8,7 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
 
-	"github.com/minhtran241/dynamodb-go-crud/internal/controllers/product"
+	"github.com/minhtran241/dynamodb-go-crud/internal/controllers"
 	EntityProduct "github.com/minhtran241/dynamodb-go-crud/internal/entities/product"
 	"github.com/minhtran241/dynamodb-go-crud/internal/handlers"
 	"github.com/minhtran241/dynamodb-go-crud/internal/repository/adapter"

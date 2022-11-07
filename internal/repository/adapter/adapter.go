@@ -16,7 +16,7 @@ type Interface interface {
 	Health() bool
 	FindAll(condition expression.Expression, tableName string) (response *dynamodb.ScanOutput, err error)
 	FindOne(condition map[string]interface{}, tableName string) (response *dynamodb.GetItemOutput, err error)
-	CreateOrUpdate(condition map[string]interface{}, tableName string) (response *dynamodb.PutItemOutput, err error)
+	CreateOrUpdate(entity interface{}, tableName string) (response *dynamodb.PutItemOutput, err error)
 	Delete(condition map[string]interface{}, tableName string) (response *dynamodb.DeleteItemOutput, err error)
 }
 
@@ -28,10 +28,7 @@ func NewAdapter(con *dynamodb.DynamoDB) Interface {
 }
 
 func (db *Database) Health() bool {
-
-	_, err := db.connection.ListTables(
-		&dynamodb.ListTablesInput{},
-	)
+	_, err := db.connection.ListTables(&dynamodb.ListTablesInput{})
 	return err == nil
 }
 
@@ -47,13 +44,13 @@ func (db *Database) FindAll(condition expression.Expression, tableName string) (
 }
 
 func (db *Database) FindOne(condition map[string]interface{}, tableName string) (response *dynamodb.GetItemOutput, err error) {
-	conditionedParsed, err := dynamodbattribute.MarshalMap(condition)
+	conditionParsed, err := dynamodbattribute.MarshalMap(condition)
 	if err != nil {
 		return nil, err
 	}
 	input := &dynamodb.GetItemInput{
 		TableName: aws.String(tableName),
-		Key:       conditionedParsed,
+		Key:       conditionParsed,
 	}
 	return db.connection.GetItem(input)
 }
@@ -76,8 +73,8 @@ func (db *Database) Delete(condition map[string]interface{}, tableName string) (
 		return nil, err
 	}
 	input := &dynamodb.DeleteItemInput{
-		TableName: aws.String(tableName),
 		Key:       conditionParsed,
+		TableName: aws.String(tableName),
 	}
 	return db.connection.DeleteItem(input)
 }
