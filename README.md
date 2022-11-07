@@ -1,5 +1,8 @@
 ## CRUD Product App
 
+![Go](https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white)
+![Dynamodb](https://img.shields.io/badge/Amazon%20DynamoDB-4053D6?style=flat-square&logo=amazondynamodb&logoColor=white)
+
 This project includes a sample application that uses Amazon DynamoDB to perform CRUD operations
 
 ### Interface and Data Flow
@@ -16,7 +19,7 @@ type Interface interface {
 }
 ```
 
-Data flow (`internal` folder)
+Data flow ([internal](https://github.com/minhtran241/dynamodb-go-crud/tree/main/internal) folder)
 
 ```
 routes ➡  handlers ➡ controllers ➡ entities
@@ -48,27 +51,27 @@ List dependencies used in this system by using [github.com/ribice/glice](https:/
 
 The Product struct is used to perform the following CRUD operations:
 
--   Create:
+-   Create
     -   Endpoint: `/product`
     -   Request: `POST` request
     -   Input: Client passes in the new object's properties via JSON body
     -   Output: A new object is created in the database
--   ListOne:
+-   ListOne
     -   Endpoint: `/product/{ID}`
     -   Request: `GET` request
     -   Input: Client passes in the name object to be retrieved via endpoint field
     -   Output: All the fields of the object are outputted to the console
--   ListAll:
+-   ListAll
     -   Endpoint: `/product`
     -   Request: `GET` request
     -   Input: None
     -   Output: All the objects are outputted to the console
--   Delete:
+-   Delete
     -   Endpoint: `/product/{ID}`
     -   Request: `GET` request
     -   Input: Client passes in the name of the object to be deleted via endpoint field
     -   Output: Object is deleted from the database
--   Update:
+-   Update
     -   Endpoint: `/product/{ID}`
     -   Request: `PUT` request
     -   Input: Client passes in the new object's properties via JSON body and the name of the object to be edited via JSON body
