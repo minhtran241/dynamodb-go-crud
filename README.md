@@ -45,7 +45,7 @@ List dependencies used in this system by using [github.com/ribice/glice](https:/
 
 -   HealthCheck provided
     -   Endpoint: `/health`
-    -   Request: GET request
+    -   Request: `GET` request
     -   Input: None
     -   Output: The status of the server
 
